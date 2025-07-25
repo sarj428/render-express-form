@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List</title>
+    <link rel="stylesheet" href="/css/new.css">
+</head>
+<body>
+    <header>
+        <h1>My Todo List</h1>
+    </header>
+
+<div class="wrapper"></div>
+
+    <div class="box">
+        <form action="/" method="POST" onsubmit="return validateForm()">
+            <input type="text" name="task" id="taskInput" placeholder="Enter the task">
+            <select name="priority">
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+            </select>
+            <button type="submit">+</button>
+        </form>
+
+        <form action="/filter" method="GET" class="filter-form">
+            <select name="filter">
+                <option value="">All</option>
+                <option value="High">High</option>
+                <option value="Medium">Medium</option>
+                <option value="Low">Low</option>
+            </select>
+            <button type="submit">Filter</button>
+        </form>
+
+        <% for(var i=0; i<tasks.length; i++) { %>
+            <div class="task-item">
+                <form action="/delete" method="POST">
+                    <input type="hidden" name="index" value="<%= i %>">
+                    <button type="submit">✖</button>
+                </form>
+                <form action="/edit" method="POST">
+                    <input type="hidden" name="index" value="<%= i %>">
+                    <input type="text" name="updated" value="<%= tasks[i].text %>">
+                    <select name="priority">
+                        <option <%= tasks[i].priority === "Low" ? "selected" : "" %> >Low</option>
+                        <option <%= tasks[i].priority === "Medium" ? "selected" : "" %> >Medium</option>
+                        <option <%= tasks[i].priority === "High" ? "selected" : "" %> >High</option>
+                    </select>
+                    <button type="submit">✔</button>
+                </form>
+            </div>
+            <% if(i != tasks.length - 1) { %>
+                <hr class="task-separator">
+            <% } %>
+        <% } %>
+    </div>
+
+    </div>
+
+    <footer>
+        <p>Made by Sarthak Joshi</p>
+    </footer>
+
+    <script>
+        function validateForm() {
+            var input = document.getElementById("taskInput").value.trim();
+            if (input === "") {
+                alert("Please enter a task before adding.");
+                return false;
+            }
+            return true;
+        }
+    </script>
+
+</body>
+</html>
